@@ -1,6 +1,9 @@
 ### Get All Users
 GET http://localhost:3000/user/
 
+### Get One User
+GET http://localhost:3000/user/3
+
 ### Sign Up
 POST http://localhost:3000/user/signup
 Content-Type: application/json
@@ -10,3 +13,9 @@ Content-Type: application/json
   "email": "test2@test2.com",
   "password": "12345"
 }
+
+### Update User Status
+PATCH http://localhost:3000/user/4
+
+### Delete One User
+DELETE http://localhost:3000/user/3

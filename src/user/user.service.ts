@@ -11,6 +11,10 @@ export class UserService {
     return this.repo.find({ where: { email } });
   }
 
+  findOne(id: number) {
+    return this.repo.findOneBy({ id });
+  }
+
   create(name: string, email: string, password: string) {
     const registrationTime = new Date().toString();
     const user = this.repo.create({
@@ -26,5 +30,27 @@ export class UserService {
 
   sendAllUsers() {
     return this.repo.find();
+  }
+
+  async updateStatus(id: number) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new Error('User Not Found');
+    }
+
+    const updatedUser = { ...user, isActive: !user.isActive };
+
+    return this.repo.save(this.repo.create(updatedUser));
+  }
+
+  async deleteOneUser(id: number) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new Error('User not found');
+    } else {
+      return this.repo.remove(user);
+    }
   }
 }

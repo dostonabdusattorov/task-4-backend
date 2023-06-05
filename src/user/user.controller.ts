@@ -2,7 +2,11 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
+  NotFoundException,
+  Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -21,12 +25,43 @@ export class UserController {
     return this.usersSer.sendAllUsers();
   }
 
+  @Get('/:id')
+  async getOneUser(@Param('id') id: string) {
+    const user = await this.usersSer.findOne(+id);
+
+    if (!user) {
+      throw new NotFoundException('User Not Found', {
+        cause: new Error('User Not Found'),
+      });
+    }
+
+    return user;
+  }
+
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto) {
     try {
       return await this.authSer.signup(body.name, body.email, body.password);
     } catch (error) {
       throw new BadRequestException(error.message, { cause: error });
+    }
+  }
+
+  @Patch('/:id')
+  async updateUserStatus(@Param('id') id: string) {
+    try {
+      return await this.usersSer.updateStatus(+id);
+    } catch (error) {
+      throw new NotFoundException(error.message, { cause: error });
+    }
+  }
+
+  @Delete('/:id')
+  async deleteOneUser(@Param('id') id: string) {
+    try {
+      return await this.usersSer.deleteOneUser(+id);
+    } catch (error) {
+      throw new NotFoundException(error.message, { cause: error });
     }
   }
 }
