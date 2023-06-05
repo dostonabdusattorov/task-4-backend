@@ -5,13 +5,22 @@ GET http://localhost:3000/user/
 GET http://localhost:3000/user/4
 
 ### Sign Up
-POST http://localhost:3000/user/signup
+POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
   "name": "doston",
-  "email": "test2@test2.com",
-  "password": "12345"
+  "email": "test3@test3.com",
+  "password": "doston"
+}
+
+### Sign In
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "test3@test3.com",
+  "password": "doston"
 }
 
 ### Update User Status
