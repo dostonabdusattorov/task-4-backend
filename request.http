@@ -1,0 +1,12 @@
+### Get All Users
+GET http://localhost:3000/user/
+
+### Sign Up
+POST http://localhost:3000/user/signup
+Content-Type: application/json
+
+{
+  "name": "doston",
+  "email": "test2@test2.com",
+  "password": "12345"
+}
