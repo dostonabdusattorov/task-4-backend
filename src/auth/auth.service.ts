@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from '../user/user.service';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 

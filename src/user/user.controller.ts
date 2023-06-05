@@ -10,15 +10,13 @@ import {
   Post,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthService } from './auth.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
-import { CreateUserDto } from './dtos/create-user.dto';
-import { UserDto } from './dtos/user.dto';
+import { UserDto } from '../dtos/user.dto';
 
 @Serialize(UserDto)
 @Controller('user')
 export class UserController {
-  constructor(private usersSer: UserService, private authSer: AuthService) {}
+  constructor(private usersSer: UserService) {}
 
   @Get('/')
   getAllUsers() {
@@ -36,15 +34,6 @@ export class UserController {
     }
 
     return user;
-  }
-
-  @Post('/signup')
-  async createUser(@Body() body: CreateUserDto) {
-    try {
-      return await this.authSer.signup(body.name, body.email, body.password);
-    } catch (error) {
-      throw new BadRequestException(error.message, { cause: error });
-    }
   }
 
   @Patch('/:id')
