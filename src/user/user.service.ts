@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { HttpStatusCodes } from 'src/constants';
 
 @Injectable()
 export class UserService {
@@ -36,7 +37,7 @@ export class UserService {
     const user = await this.findOne(id);
 
     if (!user) {
-      throw new Error('User Not Found');
+      throw new Error(HttpStatusCodes.NotFound);
     }
 
     const updatedUser = { ...user, isActive: !user.isActive };
@@ -48,7 +49,7 @@ export class UserService {
     const user = await this.findOne(id);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error(HttpStatusCodes.NotFound);
     } else {
       return this.repo.remove(user);
     }

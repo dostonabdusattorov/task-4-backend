@@ -1,20 +1,21 @@
 import {
-  BadRequestException,
-  Body,
   Controller,
   Delete,
   Get,
   NotFoundException,
   Param,
   Patch,
-  Post,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from '../dtos/user.dto';
+import { AuthGuard } from '../auth/auth.guard';
+import { HttpStatusCodes } from 'src/constants';
 
 @Serialize(UserDto)
 @Controller('user')
+@UseGuards(AuthGuard)
 export class UserController {
   constructor(private usersSer: UserService) {}
 
@@ -28,8 +29,8 @@ export class UserController {
     const user = await this.usersSer.findOne(+id);
 
     if (!user) {
-      throw new NotFoundException('User Not Found', {
-        cause: new Error('User Not Found'),
+      throw new NotFoundException(HttpStatusCodes.NotFound, {
+        cause: new Error(HttpStatusCodes.NotFound),
       });
     }
 
@@ -41,7 +42,9 @@ export class UserController {
     try {
       return await this.usersSer.updateStatus(+id);
     } catch (error) {
-      throw new NotFoundException(error.message, { cause: error });
+      throw new NotFoundException(error.message, {
+        cause: error,
+      });
     }
   }
 
@@ -50,7 +53,9 @@ export class UserController {
     try {
       return await this.usersSer.deleteOneUser(+id);
     } catch (error) {
-      throw new NotFoundException(error.message, { cause: error });
+      throw new NotFoundException(error.message, {
+        cause: error,
+      });
     }
   }
 }
