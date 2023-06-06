@@ -14,7 +14,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { HttpStatusCodes } from 'src/constants';
 
 @Serialize(UserDto)
-@Controller('user')
+@Controller('users')
 @UseGuards(AuthGuard)
 export class UserController {
   constructor(private usersSer: UserService) {}
