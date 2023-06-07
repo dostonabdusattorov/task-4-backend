@@ -51,7 +51,7 @@ export class AuthService {
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 
     if (hash.toString('hex') !== storedHash) {
-      throw new UnauthorizedException(HttpStatusCodes.Unauthorized);
+      throw new UnauthorizedException(HttpStatusCodes.WrongCredentials);
     }
 
     if (!user.isActive) {
@@ -68,6 +68,7 @@ export class AuthService {
     this.repo.save(signedinUser);
 
     return {
+      user: signedinUser,
       access_token: await this.jwtSer.signAsync({ ...signedinUser }),
     };
   }
