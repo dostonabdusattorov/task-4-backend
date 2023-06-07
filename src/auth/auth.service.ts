@@ -59,13 +59,12 @@ export class AuthService {
     }
     // TODO: Generate a JWT and return it here
     // instead of the user object
-    const lastLoginTime = new Date().toString();
     const signedinUser = this.repo.create({
       ...user,
-      lastLoginTime,
+      lastLoginTime: new Date().toString(),
     });
 
-    this.repo.save(signedinUser);
+    await this.repo.save(signedinUser);
 
     return {
       user: signedinUser,
